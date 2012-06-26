@@ -14,8 +14,10 @@ https://github.com/arturosl/QueenFileManager/downloads
 ```php
 <?php
 require_once('QFM.php');
-$qfm = new QFM(NULL,'demo/');
-$qfm->newFile('demo'); /* 1º attr - name of file ,  2º attr - path of file */
+/* If the directory does not exist Then create the directory */
+$qfm = new QFM(NULL,'demo/'); 
+/* name of file &  nosotros no necesitamos usar la extension .txt */
+$qfm->newFile('demo'); 
 
 /*
 Result:
@@ -25,6 +27,6 @@ Result:
 ?>
 ```  
  
-URL: https://github.com/arturosl/QueenFileManager  
-License: FREE  
+URL GITHUB: https://github.com/arturosl/QueenFileManager
+License: FREE
 (c) 2012, Arturo Salgado Lomeli <arturosl.1990@gmail.com>  

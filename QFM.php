@@ -14,7 +14,7 @@ twitter:   #DEVarturo
 
 class QFM{
   private $masterfile = 'masterFile'; // name of file text master;
-  private $path='QFMpath'; //folder content of file
+  private $path='QFMpath/'; //folder content of file
   private $limitLines=80; //limit of lines per file text + linesCache
   private $linesCache=20; //lines copy of the last filetext
   private $folderBackup = 'backup'; // name of folder with backup file
@@ -22,7 +22,7 @@ class QFM{
   function __construct($masterfile=NULL,$path=NULL) {
 	  date_default_timezone_set('UTC'); //Prevent error date;
 	  $this->masterfile = $masterfile == NULL ? $this->masterfile : $masterfile;
-	  $this->path = $path == NULL ? $this->path : $path;
+	  path($this->path) = $path == NULL ? $this->path : $path;
    }
   
   /* FUNCTIONs CORE FILE */
@@ -42,23 +42,28 @@ class QFM{
 
   /* create a new file */
   public function newFile($name=NULL,$path=NULL){
-	return $this->openFile("x",$name,$path);
+	if($name==NULL || strlen($name)==0 || $path == NULL) return false;
+	return $this->openFile("x",$name,path($path));
   }
   
   /* move a file , source = where is masterfile and newS is == new source of masterfile*/
-  public function moveFile($source,$newS){
-	if(!is_dir($this->metaFile('path').$newS))
-	  mkdir($this->metaFile('path').$newS);
-    rename($source, $this->metaFile('path').$newS.'/'.$this->metaFile('masterfile').date("-d-F-Y __ G-i-s").'.txt');
+  public function moveFile($source,$newS,$date=false){
+    path($newS);
+    rename($source, $newS.$this->metaFile('masterfile').$date==false ? '' : date("-d-F-Y __ G-i-s").'.txt');
   }
   
   /* rename a file */
   public function renameFile($masterF,$newName=NULL,$path=NULL){
-    $path = $path == NULL ? $this->metaFile('path') : $path;
+    path($path) = $path == NULL ? $this->metaFile('path') : $path;
 	$newName= $newName == NULL ? $this->metaFile('masterfile') : $newName;
 	rename($path.$masterF.'.txt', $path.$newName.'.txt');
   }
   
+  public function path($path=NULL){
+	  if($path==NULL) return false;
+	  if(is_dir($path)==false) mkdir($path);  //if not is a dir then create
+	  return $path;
+  }
     
   
 /* ############################################################ */  
@@ -145,7 +150,7 @@ class QFM{
 		++$i;
 	    }
 		fclose($f);
-	    $this->moveFile($this->metaFile('path_file'),$this->metaFile('folderBackup'));
+	    $this->moveFile($this->metaFile('path_file'),$this->metaFile('folderBackup'),true);
 		$f=$this->newFile($this->metaFile('masterfile'));
 		fwrite($f,$str);
 		fclose($f);
