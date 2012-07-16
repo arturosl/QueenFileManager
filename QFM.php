@@ -22,7 +22,7 @@ class QFM{
   function __construct($masterfile=NULL,$path=NULL) {
 	  date_default_timezone_set('UTC'); //Prevent error date;
 	  $this->masterfile = $masterfile == NULL ? $this->masterfile : $masterfile;
-	  path($this->path) = $path == NULL ? $this->path : $path;
+	  $this->path = $this->the_path($path == NULL ? $this->path : $path);
    }
   
   /* FUNCTIONs CORE FILE */
@@ -43,23 +43,23 @@ class QFM{
   /* create a new file */
   public function newFile($name=NULL,$path=NULL){
 	if($name==NULL || strlen($name)==0 || $path == NULL) return false;
-	return $this->openFile("x",$name,path($path));
+	return $this->openFile("x",$name,$this->the_path($path));
   }
   
   /* move a file , source = where is masterfile and newS is == new source of masterfile*/
   public function moveFile($source,$newS,$date=false){
-    path($newS);
+    $this->the_path($newS);
     rename($source, $newS.$this->metaFile('masterfile').$date==false ? '' : date("-d-F-Y __ G-i-s").'.txt');
   }
   
   /* rename a file */
   public function renameFile($masterF,$newName=NULL,$path=NULL){
-    path($path) = $path == NULL ? $this->metaFile('path') : $path;
+    $path =$this->the_path( $path == NULL ? $this->metaFile('path') : $path);
 	$newName= $newName == NULL ? $this->metaFile('masterfile') : $newName;
 	rename($path.$masterF.'.txt', $path.$newName.'.txt');
   }
   
-  public function path($path=NULL){
+  public function the_path($path=NULL){
 	  if($path==NULL) return false;
 	  if(is_dir($path)==false) mkdir($path);  //if not is a dir then create
 	  return $path;
