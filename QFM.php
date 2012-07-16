@@ -55,7 +55,7 @@ class QFM{
   /* rename a file */
   public function renameFile($masterF,$newName=NULL,$path=NULL){
     $path =$this->the_path( $path == NULL ? $this->metaFile('path') : $path);
-	$newName= $newName == NULL ? $this->metaFile('masterfile') : $newName;
+	$newName= $newName == NULL ? $this->the_path($this->metaFile('masterfile')) : $newName;
 	rename($path.$masterF.'.txt', $path.$newName.'.txt');
   }
   
@@ -167,7 +167,7 @@ class QFM{
   /* Return the number of lines , 1 to X */
   public function nLines($file=NULL,$path=NULL){
     $i=0;
-	$f=$this->openFile('r',$file,$path);
+	$f=$this->openFile('w+',$file,$path);
 	if($f){
 	  while(!feof($f)){
 	    fgets($f);

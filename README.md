@@ -16,7 +16,7 @@ https://github.com/arturosl/QueenFileManager/downloads
 require_once('QFM.php');
 /* If the directory does not exist Then create the directory */
 $qfm = new QFM(NULL,'demo/'); 
-/* name of file &  we do not need to use the extension. txt */
+/* name of file &  we do not need to use the extension .txt */
 $qfm->newFile('demo'); 
 
 /*
